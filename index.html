@@ -3,491 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acquisizione Documento - CEDFor</title>
+  <title>Acquisizione Documento</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
       padding: 20px;
-      color: #333;
-    }
-    
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    
-    .header {
-      background: linear-gradient(135deg, #007bff, #0056b3);
-      color: white;
-      padding: 30px;
+      background-color: #f7f9fc;
       text-align: center;
     }
-    
-    .logo-large {
-      max-width: 200px;
-      margin-bottom: 20px;
-      /* Rimosso il filtro che causava problemi */
-    }
-    
-    .logo-small {
-      max-width: 100px;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      /* Rimosso il filtro che causava problemi */
-    }
-    
-    .content {
-      padding: 30px;
-    }
-    
     .hidden {
       display: none;
     }
-    
-    .welcome-section {
-      text-align: center;
-    }
-    
-    .welcome-section h2 {
-      color: #333;
-      margin-bottom: 20px;
-      font-size: 2rem;
-    }
-    
-    .welcome-section p {
-      color: #666;
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
-    
-    .privacy-link {
-      display: inline-block;
-      color: #007bff;
-      text-decoration: none;
-      margin-bottom: 30px;
-      padding: 10px 20px;
-      border: 2px solid #007bff;
-      border-radius: 25px;
-      transition: all 0.3s;
-    }
-    
-    .privacy-link:hover {
-      background: #007bff;
-      color: white;
-      transform: translateY(-2px);
-    }
-    
-    .btn {
+    .vertical-buttons button {
       display: block;
-      width: 100%;
-      padding: 15px 30px;
-      margin: 15px 0;
-      font-size: 16px;
-      font-weight: 600;
+      width: 80%;
+      margin: 10px auto;
+      padding: 20px;
+      font-size: 18px;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
       cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
     }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #007bff, #0056b3);
-      color: white;
+    .vertical-buttons button:hover {
+      background-color: #0056b3;
     }
-    
-    .btn-secondary {
-      background: linear-gradient(135deg, #28a745, #1e7e34);
-      color: white;
-    }
-    
-    .btn-warning {
-      background: linear-gradient(135deg, #ffc107, #e0a800);
-      color: #333;
-    }
-    
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    .btn:active {
-      transform: translateY(-1px);
-    }
-    
-    .btn-captured {
-      background: linear-gradient(135deg, #28a745, #1e7e34);
-      color: white;
-    }
-    
-    .btn-captured::after {
-      content: " ✓";
-    }
-    
     input[type="file"] {
       display: none;
     }
-    
-    .progress-indicator {
-      display: flex;
-      justify-content: space-between;
-      margin: 30px 0;
-      padding: 0 20px;
-    }
-    
-    .progress-step {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    
-    .progress-step.completed {
-      background: #28a745;
-      color: white;
-    }
-    
-    .progress-step.active {
-      background: #007bff;
-      color: white;
-    }
-    
-    .output {
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 12px;
-      padding: 20px;
+    pre {
+      text-align: left;
+      background: #eaeaea;
+      padding: 10px;
+      border-radius: 6px;
       margin-top: 20px;
       white-space: pre-wrap;
-      max-height: 400px;
-      overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      line-height: 1.4;
     }
-    
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #007bff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
+    .privacy-link {
+      margin-top: 20px;
+      display: block;
     }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .logo-large {
+      max-width: 60%;
+      margin: 20px auto;
+      display: block;
     }
-    
-    .alert {
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 8px;
-      font-weight: 500;
-    }
-    
-    .alert-success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    
-    .alert-error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    
-    @media (max-width: 768px) {
-      .container {
-        margin: 10px;
-        border-radius: 15px;
-      }
-      
-      .header {
-        padding: 20px;
-      }
-      
-      .content {
-        padding: 20px;
-      }
-      
-      .progress-indicator {
-        padding: 0 10px;
-      }
+    .logo-small {
+      max-width: 120px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Pagina di benvenuto -->
-    <div id="welcome">
-      <div class="header">
-        <img src="/logo_cedfor.png" alt="Logo CEDFor" class="logo-large" />
-        <h1>Acquisizione Documenti</h1>
-        <p>Sistema sicuro per la gestione documentale</p>
-      </div>
-      
-      <div class="content">
-        <div class="welcome-section">
-          <h2>Benvenuto</h2>
-          <p>Per proseguire con l'acquisizione dei tuoi documenti, è necessario accettare il consenso al trattamento dei dati personali secondo il GDPR.</p>
-          
-          <a class="privacy-link" href="https://www.iubenda.com/privacy-policy/29095230" target="_blank">
-            📋 Leggi l'informativa privacy
-          </a>
-          
-          <button class="btn btn-primary" onclick="prosegui()">
-            ✅ Accetto e proseguo
-          </button>
-        </div>
-      </div>
+
+  <!-- Pagina di benvenuto -->
+  <div id="welcome">
+    <h2>Benvenuto</h2>
+    <p>Per proseguire, ti chiediamo di accettare il consenso al trattamento dei dati personali.</p>
+    <a class="privacy-link" href="https://www.iubenda.com/privacy-policy/29095230" target="_blank">Leggi l'informativa privacy</a>
+	<img src="logo_cedfor.png" alt="Logo CEDFor" class="logo-large" />
+    <button onclick="prosegui()">✅ Accetto e proseguo</button>
+  </div>
+
+  <!-- Pagina di acquisizione nascosta inizialmente -->
+  <div id="scanner" class="hidden">
+    <img src="logo_cedfor.png" alt="Logo CEDFor" class="logo-small" />
+    <h2>Acquisizione documento d'identità</h2>
+    <p>Scatta una foto del fronte e del retro del documento e del codice fiscale</p>
+
+    <div class="vertical-buttons">
+      <button id="scattaFronte">📷 Scatta Fronte Documento</button>
+      <input type="file" id="inputFronte" accept="image/*" capture="environment" />
+
+      <button id="scattaRetro">📷 Scatta Retro Documento</button>
+      <input type="file" id="inputRetro" accept="image/*" capture="environment" />
+
+      <button id="scattaCfFronte">📷 Scatta CF Fronte</button>
+      <input type="file" id="inputCfFronte" accept="image/*" capture="environment" />
+
+      <button id="scattaCfRetro">📷 Scatta CF Retro</button>
+      <input type="file" id="inputCfRetro" accept="image/*" capture="environment" />
+
+      <button id="inviaDati">📤 Invia a Cedfor</button>
     </div>
 
-    <!-- Pagina di acquisizione -->
-    <div id="scanner" class="hidden">
-      <div class="header">
-        <img src="/logo_cedfor.png" alt="Logo CEDFor" class="logo-small" />
-        <h2>Acquisizione Documenti</h2>
-        <p>Scatta foto di alta qualità di tutti i documenti richiesti</p>
-      </div>
-
-      <div class="content">
-        <div class="progress-indicator">
-          <div class="progress-step" id="step1">1</div>
-          <div class="progress-step" id="step2">2</div>
-          <div class="progress-step" id="step3">3</div>
-          <div class="progress-step" id="step4">4</div>
-        </div>
-
-        <div class="vertical-buttons">
-          <button class="btn btn-secondary" id="scattaFronte">
-            📷 Documento - Fronte
-          </button>
-          <input type="file" id="inputFronte" accept="image/*" capture="environment" />
-
-          <button class="btn btn-secondary" id="scattaRetro">
-            📷 Documento - Retro
-          </button>
-          <input type="file" id="inputRetro" accept="image/*" capture="environment" />
-
-          <button class="btn btn-secondary" id="scattaCfFronte">
-            📷 Codice Fiscale - Fronte
-          </button>
-          <input type="file" id="inputCfFronte" accept="image/*" capture="environment" />
-
-          <button class="btn btn-secondary" id="scattaCfRetro">
-            📷 Codice Fiscale - Retro
-          </button>
-          <input type="file" id="inputCfRetro" accept="image/*" capture="environment" />
-
-          <button class="btn btn-warning" id="inviaDati" disabled>
-            📤 Elabora Documenti
-          </button>
-        </div>
-
-        <div class="output hidden" id="output"></div>
-      </div>
-    </div>
+    <pre id="output"></pre>
   </div>
 
   <script>
-    // Configurazione API
-    const API_BASE_URL = 'https://5c564da6-8a31-4783-b8c1-c0255bc1d3b9-00-exa3quldexcl.riker.replit.dev';
-
-
-
-    // Variabili globali
-    let fileFronte = null;
-    let fileRetro = null;
-    let fileCfFronte = null;
-    let fileCfRetro = null;
-    let filesCaricati = 0;
-
     function prosegui() {
       document.getElementById('welcome').classList.add('hidden');
       document.getElementById('scanner').classList.remove('hidden');
     }
 
-    function updateProgress() {
-      const steps = ['step1', 'step2', 'step3', 'step4'];
-      steps.forEach((step, index) => {
-        const element = document.getElementById(step);
-        if (index < filesCaricati) {
-          element.classList.add('completed');
-          element.classList.remove('active');
-        } else if (index === filesCaricati) {
-          element.classList.add('active');
-          element.classList.remove('completed');
-        } else {
-          element.classList.remove('completed', 'active');
-        }
-      });
+    const API_BASE_URL = 'https://5c564da6-8a31-4783-b8c1-c0255bc1d3b9-00-exa3quldexcl.riker.replit.dev';
 
-      // Abilita il pulsante se tutti i file sono caricati
-      const btnInvia = document.getElementById('inviaDati');
-      if (filesCaricati === 4) {
-        btnInvia.disabled = false;
-        btnInvia.textContent = '📤 Elabora Documenti';
-      }
-    }
+    let fileFronte = null;
+    let fileRetro = null;
+    let fileCfFronte = null;
+    let fileCfRetro = null;
 
-    function markButtonAsCompleted(buttonId) {
-      const button = document.getElementById(buttonId);
-      button.classList.add('btn-captured');
-      filesCaricati++;
-      updateProgress();
-    }
-
-    // Event listeners per i pulsanti
     document.getElementById('scattaFronte').addEventListener('click', () => {
       document.getElementById('inputFronte').click();
     });
-
     document.getElementById('scattaRetro').addEventListener('click', () => {
       document.getElementById('inputRetro').click();
     });
-
     document.getElementById('scattaCfFronte').addEventListener('click', () => {
       document.getElementById('inputCfFronte').click();
     });
-
     document.getElementById('scattaCfRetro').addEventListener('click', () => {
       document.getElementById('inputCfRetro').click();
     });
 
-    // Event listeners per i file input
     document.getElementById('inputFronte').addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        fileFronte = e.target.files[0];
-        markButtonAsCompleted('scattaFronte');
-      }
+      fileFronte = e.target.files[0];
     });
-
     document.getElementById('inputRetro').addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        fileRetro = e.target.files[0];
-        markButtonAsCompleted('scattaRetro');
-      }
+      fileRetro = e.target.files[0];
     });
-
     document.getElementById('inputCfFronte').addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        fileCfFronte = e.target.files[0];
-        markButtonAsCompleted('scattaCfFronte');
-      }
+      fileCfFronte = e.target.files[0];
     });
-
     document.getElementById('inputCfRetro').addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        fileCfRetro = e.target.files[0];
-        markButtonAsCompleted('scattaCfRetro');
-      }
+      fileCfRetro = e.target.files[0];
     });
 
-    // Funzione principale di invio
     document.getElementById('inviaDati').addEventListener('click', async () => {
       if (!fileFronte || !fileRetro || !fileCfFronte || !fileCfRetro) {
-        alert('⚠️ Devi caricare tutte e 4 le immagini prima di procedere');
+        alert('⚠️ Devi caricare tutte e 4 le immagini: documento e CF fronte/retro');
         return;
       }
 
-      const btnInvia = document.getElementById('inviaDati');
-      const output = document.getElementById('output');
-      
-      // Mostra loading
-      btnInvia.innerHTML = '<span class="loading"></span>Elaborazione in corso...';
-      btnInvia.disabled = true;
-      output.classList.remove('hidden');
-      output.textContent = "📤 Invio documenti al server...\n⏳ Analisi OCR in corso...";
+      const formData = new FormData();
+      formData.append('documento_fronte', fileFronte);
+      formData.append('documento_retro', fileRetro);
+      formData.append('cf_fronte', fileCfFronte);
+      formData.append('cf_retro', fileCfRetro);
+
+      document.getElementById('output').textContent = "📤 Invio in corso...";
 
       try {
-        const formData = new FormData();
-        formData.append('documento_fronte', fileFronte);
-        formData.append('documento_retro', fileRetro);
-        formData.append('cf_fronte', fileCfFronte);
-        formData.append('cf_retro', fileCfRetro);
-
         const response = await fetch(`${API_BASE_URL}/processa`, {
           method: 'POST',
           body: formData
         });
 
         const result = await response.json();
+        const testoEstratto = result.estratti || "";
 
-        if (response.ok) {
-          if (result.successo) {
-            output.innerHTML = `
-              <div class="alert alert-success">
-                <strong>✅ Documenti elaborati con successo!</strong>
-              </div>
-              <strong>📊 Dati estratti:</strong>
-              ${result.dati_estratti ? `
-                • Nome: ${result.dati_estratti.nome}
-                • Cognome: ${result.dati_estratti.cognome}  
-                • Codice Fiscale: ${result.dati_estratti.codice_fiscale}
-              ` : ''}
-              
-              <strong>📄 Testo completo estratto:</strong>
-              ${result.estratti}
-            `;
-            btnInvia.textContent = '✅ Completato';
-          } else {
-            output.innerHTML = `
-              <div class="alert alert-error">
-                <strong>⚠️ ${result.errore}</strong>
-              </div>
-              <strong>📄 Testo estratto per verifica:</strong>
-              ${result.estratti}
-            `;
-            btnInvia.textContent = '🔄 Riprova con foto migliori';
-            btnInvia.disabled = false;
-          }
-        } else {
-          throw new Error(result.errore || 'Errore del server');
-        }
+        // ✅ Mostra solo messaggio all'utente
+        document.getElementById('output').textContent = "✅ Documenti elaborati con successo. Scaricamento in corso...";
 
-      } catch (error) {
-        console.error('Errore:', error);
-        output.innerHTML = `
-          <div class="alert alert-error">
-            <strong>❌ Errore di connessione</strong><br>
-            ${error.message}
-          </div>
-          <p>Verifica la connessione internet e riprova.</p>
-        `;
-        btnInvia.textContent = '🔄 Riprova';
-        btnInvia.disabled = false;
+        // 🔽 Scarica file .txt con testo estratto
+        const blob = new Blob([testoEstratto], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'dati_estratti.txt';
+        link.click();
+
+        // 🔽 Scarica anche le 4 immagini caricate
+        const downloadImage = (file, nome) => {
+          const url = URL.createObjectURL(file);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = nome;
+          a.click();
+        };
+
+        downloadImage(fileFronte, 'documento_fronte.jpg');
+        downloadImage(fileRetro, 'documento_retro.jpg');
+        downloadImage(fileCfFronte, 'cf_fronte.jpg');
+        downloadImage(fileCfRetro, 'cf_retro.jpg');
+
+      } catch (e) {
+        document.getElementById('output').textContent = `❌ Errore durante l'invio: ${e}`;
       }
     });
-
-    // Inizializza progress indicator
-    updateProgress();
   </script>
+
 </body>
 </html>
