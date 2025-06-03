@@ -25,6 +25,14 @@
       background-color: #007bff;
       color: white;
       cursor: pointer;
+      position: relative;
+    }
+    .vertical-buttons button.success::after {
+      content: ' ✅';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
     }
     .vertical-buttons button:hover {
       background-color: #0056b3;
@@ -106,6 +114,11 @@
     let fileCfFronte = null;
     let fileCfRetro = null;
 
+    const setSuccessIcon = (btnId) => {
+      const btn = document.getElementById(btnId);
+      if (btn) btn.classList.add('success');
+    };
+
     document.getElementById('scattaFronte').addEventListener('click', () => {
       document.getElementById('inputFronte').click();
     });
@@ -121,15 +134,19 @@
 
     document.getElementById('inputFronte').addEventListener('change', (e) => {
       fileFronte = e.target.files[0];
+      setSuccessIcon('scattaFronte');
     });
     document.getElementById('inputRetro').addEventListener('change', (e) => {
       fileRetro = e.target.files[0];
+      setSuccessIcon('scattaRetro');
     });
     document.getElementById('inputCfFronte').addEventListener('change', (e) => {
       fileCfFronte = e.target.files[0];
+      setSuccessIcon('scattaCfFronte');
     });
     document.getElementById('inputCfRetro').addEventListener('change', (e) => {
       fileCfRetro = e.target.files[0];
+      setSuccessIcon('scattaCfRetro');
     });
 
     document.getElementById('inviaDati').addEventListener('click', async () => {
@@ -156,28 +173,9 @@
         const testoEstratto = result.estratti || "";
 
         // ✅ Mostra solo messaggio all'utente
-        document.getElementById('output').textContent = "✅ Documenti elaborati con successo. Scaricamento in corso...";
+        document.getElementById('output').textContent = "✅ Documenti elaborati con successo.";
 
-        // 🔽 Scarica file .txt con testo estratto
-        const blob = new Blob([testoEstratto], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'dati_estratti.txt';
-        link.click();
-
-        // 🔽 Scarica anche le 4 immagini caricate
-        const downloadImage = (file, nome) => {
-          const url = URL.createObjectURL(file);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = nome;
-          a.click();
-        };
-
-        downloadImage(fileFronte, 'documento_fronte.jpg');
-        downloadImage(fileRetro, 'documento_retro.jpg');
-        downloadImage(fileCfFronte, 'cf_fronte.jpg');
-        downloadImage(fileCfRetro, 'cf_retro.jpg');
+        // ❌ Nessun download lato client: ora sarà compito del server salvare i file e notificarti
 
       } catch (e) {
         document.getElementById('output').textContent = `❌ Errore durante l'invio: ${e}`;
