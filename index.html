@@ -150,37 +150,38 @@
     });
 
     document.getElementById('inviaDati').addEventListener('click', async () => {
-      if (!fileFronte || !fileRetro || !fileCfFronte || !fileCfRetro) {
-        alert('⚠️ Devi caricare tutte e 4 le immagini: documento e CF fronte/retro');
-        return;
-      }
+  if (!fileFronte || !fileRetro || !fileCfFronte || !fileCfRetro) {
+    alert('⚠️ Devi caricare tutte e 4 le immagini: documento e CF fronte/retro');
+    return;
+  }
 
-      const formData = new FormData();
-      formData.append('documento_fronte', fileFronte);
-      formData.append('documento_retro', fileRetro);
-      formData.append('cf_fronte', fileCfFronte);
-      formData.append('cf_retro', fileCfRetro);
+  const formData = new FormData();
+  formData.append('documento_fronte', fileFronte);
+  formData.append('documento_retro', fileRetro);
+  formData.append('cf_fronte', fileCfFronte);
+  formData.append('cf_retro', fileCfRetro);
 
-      document.getElementById('output').textContent = "📤 Invio in corso...";
+  document.getElementById('output').textContent = "📤 Invio in corso...";
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/processa`, {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-        const testoEstratto = result.estratti || "";
-
-        // ✅ Mostra solo messaggio all'utente
-        document.getElementById('output').textContent = "✅ Documenti elaborati con successo.";
-
-        // ❌ Nessun download lato client: ora sarà compito del server salvare i file e notificarti
-
-      } catch (e) {
-        document.getElementById('output').textContent = `❌ Errore durante l'invio: ${e}`;
-      }
+  try {
+    const response = await fetch(`${API_BASE_URL}/processa`, {
+      method: 'POST',
+      body: formData
     });
+
+    const result = await response.json();
+
+    if (result.successo) {
+      document.getElementById('output').textContent = `✅ ${result.messaggio}`;
+    } else {
+      document.getElementById('output').textContent = `❌ Errore: ${result.messaggio}`;
+    }
+
+  } catch (e) {
+    document.getElementById('output').textContent = `❌ Errore durante l'invio: ${e.message}`;
+  }
+});
+
   </script>
 
 </body>
