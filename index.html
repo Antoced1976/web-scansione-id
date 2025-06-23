@@ -344,24 +344,37 @@
     
     // Funzione di compressione
     function comprimiImmagine(file, callback) {
-      // Limita dimensione massima accettata (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("⚠️ Immagine troppo grande. Riprova con una foto più leggera.");
+      console.log(`📸 Elaborazione immagine: ${file.name}, dimensione: ${(file.size/1024/1024).toFixed(2)}MB`);
+      
+      // Limita dimensione massima accettata (15MB - più permissivo)
+      if (file.size > 15 * 1024 * 1024) {
+        alert("⚠️ Immagine troppo grande (>15MB). Riprova con una foto più leggera.");
         return;
       }
 
+      // Configurazione aggressiva per smartphone
       new Compressor(file, {
-        quality: 0.6,        // 60% qualità
-        maxWidth: 1280,      // Larghezza massima
-        maxHeight: 1280,     // Altezza massima
-        convertSize: 1000000, // Converti a JPEG se > 1MB
+        quality: 0.7,         // Qualità 70% (buon compromesso)
+        maxWidth: 1024,       // Riduciamo ulteriormente
+        maxHeight: 1024,      // Riduciamo ulteriormente  
+        mimeType: 'image/jpeg', // Forza JPEG
+        convertSize: 500000,  // Converti a JPEG se > 500KB
+        checkOrientation: false, // Disabilita controllo orientamento (risparmia memoria)
+        retainExif: false,    // Rimuovi metadati EXIF (risparmia spazio)
         success(compressed) {
-          console.log(`✅ Immagine compressa: ${file.size} → ${compressed.size} bytes`);
+          console.log(`✅ Compressione completata: ${(file.size/1024/1024).toFixed(2)}MB → ${(compressed.size/1024/1024).toFixed(2)}MB`);
           callback(compressed);
         },
         error(err) {
-          console.error('Errore compressione:', err);
-          alert("❌ Errore nella compressione dell'immagine: " + err.message);
+          console.error('❌ Errore compressione:', err);
+          
+          // Fallback: usa l'immagine originale se la compressione fallisce
+          if (file.size < 3 * 1024 * 1024) { // Se < 3MB prova comunque
+            console.log('🔄 Uso immagine originale come fallback');
+            callback(file);
+          } else {
+            alert("❌ Impossibile elaborare l'immagine. Prova a scattare una foto con risoluzione più bassa dalle impostazioni della fotocamera.");
+          }
         }
       });
     }
