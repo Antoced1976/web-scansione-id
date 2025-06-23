@@ -38,7 +38,6 @@
     .logo-large {
       max-width: 200px;
       margin-bottom: 20px;
-      /* Rimosso il filtro che causava problemi */
     }
     
     .logo-small {
@@ -48,7 +47,6 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      /* Rimosso il filtro che causava problemi */
     }
     
     .content {
@@ -278,18 +276,18 @@
       </div>
 
       <div class="content">
-	  <!-- Campo numero cellulare -->
-	  <label for="numeroCellulare">📱 Inserisci il tuo numero di cellulare:</label>
-      <input type="tel" id="numeroCellulare" name="numeroCellulare"
-       placeholder="Es: 3331234567"
-       pattern="[0-9]{10}"
-       required
-       style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 20px;">
-	<label for="emailCliente">📧 Inserisci la tua email:</label>
-	<input type="email" id="emailCliente" name="emailCliente"
-       placeholder="Es: mario.rossi@email.com"
-       required
-       style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 20px;">
+        <!-- Campo numero cellulare -->
+        <label for="numeroCellulare">📱 Inserisci il tuo numero di cellulare:</label>
+        <input type="tel" id="numeroCellulare" name="numeroCellulare"
+         placeholder="Es: 3331234567"
+         pattern="[0-9]{10}"
+         required
+         style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 20px;">
+        <label for="emailCliente">📧 Inserisci la tua email:</label>
+        <input type="email" id="emailCliente" name="emailCliente"
+         placeholder="Es: mario.rossi@email.com"
+         required
+         style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 20px;">
 
         <div class="progress-indicator">
           <div class="progress-step" id="step1">1</div>
@@ -330,10 +328,8 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js"></script>
   <script>
-  
     // Configurazione API
     const API_BASE_URL = 'https://ocr-server-143882831063.europe-west1.run.app';
-
 
     // Variabili globali
     let fileFronte = null;
@@ -341,34 +337,34 @@
     let fileCfFronte = null;
     let fileCfRetro = null;
     let filesCaricati = 0;
-	let fileFronteCompresso = null;
-	let fileRetroCompresso = null;
-	let fileCfFronteCompresso = null;
-	let fileCfRetroCompresso = null;
-	
-	// AGGIUNGI QUESTA FUNZIONE:
-	function comprimiImmagine(file, callback) {
-	// Limita dimensione massima accettata (5MB)
-	if (file.size > 5 * 1024 * 1024) {
-		alert("⚠️ Immagine troppo grande. Riprova con una foto più leggera.");
-		return;
-	}
+    let fileFronteCompresso = null;
+    let fileRetroCompresso = null;
+    let fileCfFronteCompresso = null;
+    let fileCfRetroCompresso = null;
+    
+    // Funzione di compressione
+    function comprimiImmagine(file, callback) {
+      // Limita dimensione massima accettata (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("⚠️ Immagine troppo grande. Riprova con una foto più leggera.");
+        return;
+      }
 
-	new Compressor(file, {
-    quality: 0.6,        // 60% qualità
-    maxWidth: 1280,      // Larghezza massima
-    maxHeight: 1280,     // Altezza massima
-    convertSize: 1000000, // Converti a JPEG se > 1MB
-    success(compressed) {
-      console.log(`✅ Immagine compressa: ${file.size} → ${compressed.size} bytes`);
-      callback(compressed);
-    },
-    error(err) {
-      console.error('Errore compressione:', err);
-      alert("❌ Errore nella compressione dell'immagine: " + err.message);
+      new Compressor(file, {
+        quality: 0.6,        // 60% qualità
+        maxWidth: 1280,      // Larghezza massima
+        maxHeight: 1280,     // Altezza massima
+        convertSize: 1000000, // Converti a JPEG se > 1MB
+        success(compressed) {
+          console.log(`✅ Immagine compressa: ${file.size} → ${compressed.size} bytes`);
+          callback(compressed);
+        },
+        error(err) {
+          console.error('Errore compressione:', err);
+          alert("❌ Errore nella compressione dell'immagine: " + err.message);
+        }
+      });
     }
-	});
-	}
 
     function prosegui() {
       document.getElementById('welcome').classList.add('hidden');
@@ -423,95 +419,86 @@
     });
 
     // Event listeners per i file input
-document.getElementById('inputFronte').addEventListener('change', (e) => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0];
-    fileFronte = file;
-    
-    comprimiImmagine(file, (compressed) => {
-      fileFronteCompresso = compressed;
-      markButtonAsCompleted('scattaFronte');
-    });
-  }
-});
-
-document.getElementById('inputRetro').addEventListener('change', (e) => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0];
-    fileRetro = file;
-    
-    comprimiImmagine(file, (compressed) => {
-      fileRetroCompresso = compressed;
-      markButtonAsCompleted('scattaRetro');
-    });
-  }
-});
-
-document.getElementById('inputCfFronte').addEventListener('change', (e) => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0];
-    fileCfFronte = file;
-    
-    comprimiImmagine(file, (compressed) => {
-      fileCfFronteCompresso = compressed;
-      markButtonAsCompleted('scattaCfFronte');
-    });
-  }
-});
-
-document.getElementById('inputCfRetro').addEventListener('change', (e) => {
-  if (e.target.files[0]) {
-    const file = e.target.files[0];
-    fileCfRetro = file;
-    
-    comprimiImmagine(file, (compressed) => {
-      fileCfRetroCompresso = compressed;
-      markButtonAsCompleted('scattaCfRetro');
-    });
-  }
-});
-
-// MODIFICA la funzione di invio esistente:
-document.getElementById('inviaDati').addEventListener('click', async () => {
-  // CAMBIA questo controllo:
-  if (!fileFronteCompresso || !fileRetroCompresso || !fileCfFronteCompresso || !fileCfRetroCompresso) {
-    alert('⚠️ Devi caricare tutte e 4 le immagini prima di procedere');
-    return;
-  }
-
-  const btnInvia = document.getElementById('inviaDati');
-  const output = document.getElementById('output');
-  
-  // Mostra loading
-  btnInvia.innerHTML = '<span class="loading"></span>Elaborazione in corso...';
-  btnInvia.disabled = true;
-  output.classList.remove('hidden');
-  output.textContent = "📤 Invio documenti al server...\n⏳ Analisi OCR in corso...";
-
-  try {
-    const formData = new FormData();
-    // CAMBIA questi append per usare i file compressi:
-    formData.append('documento_fronte', fileFronteCompresso);
-    formData.append('documento_retro', fileRetroCompresso);
-    formData.append('cf_fronte', fileCfFronteCompresso);
-    formData.append('cf_retro', fileCfRetroCompresso);
-    
-    const numero = document.getElementById('numeroCellulare').value;
-    const email = document.getElementById('emailCliente').value;
-    formData.append('telefono', numero);
-    formData.append('email', email);
-
-    // Il resto del codice rimane uguale...
-    const response = await fetch(`${API_BASE_URL}/processa`, {
-      method: 'POST',
-      body: formData
+    document.getElementById('inputFronte').addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        const file = e.target.files[0];
+        fileFronte = file;
+        
+        comprimiImmagine(file, (compressed) => {
+          fileFronteCompresso = compressed;
+          markButtonAsCompleted('scattaFronte');
+        });
+      }
     });
 
-    // ... resto della funzione invariato
-  } catch (error) {
-    // ... gestione errori invariata
-  }
-});
+    document.getElementById('inputRetro').addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        const file = e.target.files[0];
+        fileRetro = file;
+        
+        comprimiImmagine(file, (compressed) => {
+          fileRetroCompresso = compressed;
+          markButtonAsCompleted('scattaRetro');
+        });
+      }
+    });
+
+    document.getElementById('inputCfFronte').addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        const file = e.target.files[0];
+        fileCfFronte = file;
+        
+        comprimiImmagine(file, (compressed) => {
+          fileCfFronteCompresso = compressed;
+          markButtonAsCompleted('scattaCfFronte');
+        });
+      }
+    });
+
+    document.getElementById('inputCfRetro').addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        const file = e.target.files[0];
+        fileCfRetro = file;
+        
+        comprimiImmagine(file, (compressed) => {
+          fileCfRetroCompresso = compressed;
+          markButtonAsCompleted('scattaCfRetro');
+        });
+      }
+    });
+
+    // Funzione principale di invio
+    document.getElementById('inviaDati').addEventListener('click', async () => {
+      if (!fileFronteCompresso || !fileRetroCompresso || !fileCfFronteCompresso || !fileCfRetroCompresso) {
+        alert('⚠️ Devi caricare tutte e 4 le immagini prima di procedere');
+        return;
+      }
+
+      const btnInvia = document.getElementById('inviaDati');
+      const output = document.getElementById('output');
+      
+      // Mostra loading
+      btnInvia.innerHTML = '<span class="loading"></span>Elaborazione in corso...';
+      btnInvia.disabled = true;
+      output.classList.remove('hidden');
+      output.textContent = "📤 Invio documenti al server...\n⏳ Analisi OCR in corso...";
+
+      try {
+        const formData = new FormData();
+        formData.append('documento_fronte', fileFronteCompresso);
+        formData.append('documento_retro', fileRetroCompresso);
+        formData.append('cf_fronte', fileCfFronteCompresso);
+        formData.append('cf_retro', fileCfRetroCompresso);
+        
+        const numero = document.getElementById('numeroCellulare').value;
+        const email = document.getElementById('emailCliente').value;
+        formData.append('telefono', numero);
+        formData.append('email', email);
+
+        const response = await fetch(`${API_BASE_URL}/processa`, {
+          method: 'POST',
+          body: formData
+        });
 
         const result = await response.json();
 
